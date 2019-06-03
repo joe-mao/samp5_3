@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>menu/actAlignCenter.PNG</file>
+        <file>menu/actAlignLeft.PNG</file>
+        <file>menu/actAlignRight.PNG</file>
+        <file>menu/actAppend.PNG</file>
+        <file>menu/actDelete.PNG</file>
+        <file>menu/actExit.PNG</file>
+        <file>menu/actFontBold.PNG</file>
+        <file>menu/actInsert.PNG</file>
+        <file>menu/actModelData.PNG</file>
+        <file>menu/actOpen.PNG</file>
+        <file>menu/actSave.PNG</file>
+    </qresource>
+</RCC>
