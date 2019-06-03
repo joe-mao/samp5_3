@@ -43,13 +43,15 @@ void MainWindow::iniModelFromStringList(QStringList & aFileContent)
 void MainWindow::on_currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
     //选择单元格变化时的响应
+
     if(current.isValid()){
         LabCellPos->setText(QString::asprintf("当前单元格：%d 行, %d 列", current.row(), current.column()));
         QStandardItem * aItem = theModel->itemFromIndex(current);
         this->LabCellText->setText("单元格内容：" + aItem->text());
-        QFont font = aItem->font();
-        this->ui->actFontBold->font();
-        this->ui->actFontBold->setChecked(font.bold());
+
+//        QFont font = aItem->font();
+//        this->ui->actFontBold->font();
+//        this->ui->actFontBold->setChecked(font.bold());
     }
 }
 
@@ -137,11 +139,82 @@ void MainWindow::on_actDelete_triggered()
 {
     //删除行
     QModelIndex curIndex = theSelection->currentIndex();//获取模型索引
+    qDebug()<<"curIndex.row()"<<curIndex.row();
+    qDebug()<<"theModel->rowCount()"<<theModel->rowCount();
     if(curIndex.row() == theModel->rowCount() - 1){
         theModel->removeRow(curIndex.row());//删除最后一行
     }else{
         qDebug()<<curIndex.row();
         theModel->removeRow(curIndex.row());//删除一行，并重新设置当前行选择
         theSelection->setCurrentIndex(curIndex, QItemSelectionModel::Select);
+    }
+}
+
+void MainWindow::on_actAlignCenter_triggered()
+{
+    //设置文字居中对齐
+    if(!theSelection->hasSelection()){
+        //木有选择的时候
+        return;
+    }
+    //获取单元格的模型索引列表，可以是多选
+    QModelIndexList selectedIndex = theSelection->selectedIndexes();
+    for(int i = 0; i < selectedIndex.count(); ++i){
+        QModelIndex aIndex = selectedIndex.at(i);//获取一个模型索引
+        QStandardItem * aItem = theModel->itemFromIndex(aIndex);
+        aItem->setTextAlignment(Qt::AlignCenter);//设置文字对齐方式
+    }
+}
+
+void MainWindow::on_actAlignLeft_triggered()
+{
+    //设置文字居中对齐
+    if(!theSelection->hasSelection()){
+        //木有选择的时候
+        return;
+    }
+    //获取单元格的模型索引列表，可以是多选
+    QModelIndexList selectedIndex = theSelection->selectedIndexes();
+    for(int i = 0; i < selectedIndex.count(); ++i){
+        QModelIndex aIndex = selectedIndex.at(i);//获取一个模型索引
+        QStandardItem * aItem = theModel->itemFromIndex(aIndex);
+        aItem->setTextAlignment(Qt::AlignLeft);//设置文字对齐方式
+    }
+}
+
+void MainWindow::on_actAlignRight_triggered()
+{
+    //设置文字居中对齐
+    if(!theSelection->hasSelection()){
+        //木有选择的时候
+        return;
+    }
+    //获取单元格的模型索引列表，可以是多选
+    QModelIndexList selectedIndex = theSelection->selectedIndexes();
+    for(int i = 0; i < selectedIndex.count(); ++i){
+        QModelIndex aIndex = selectedIndex.at(i);//获取一个模型索引
+        QStandardItem * aItem = theModel->itemFromIndex(aIndex);
+        aItem->setTextAlignment(Qt::AlignRight);//设置文字对齐方式
+    }
+}
+
+void MainWindow::on_actFontBold_toggled(bool checked)
+{
+    qDebug()<<__FUNCTION__;
+    //设置字体
+    if(!theSelection->hasSelection()){
+        return;
+    }
+
+
+
+    QModelIndexList selectedIndex = theSelection->selectedIndexes();
+    for(int i = 0; i < selectedIndex.count(); ++i){
+        QModelIndex aIndex = selectedIndex.at(i);//获取一个模型索引
+        QStandardItem * aItem = theModel->itemFromIndex(aIndex);
+       // qDebug()<<aItem->text();
+        QFont font = aItem->font();
+        font.setBold(checked);
+        aItem->setFont(font);
     }
 }
